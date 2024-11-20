@@ -1,9 +1,5 @@
+#Provider block
 provider "aws" {
-  region = var.aws_region
+  region                  = var.aws_region
+  shared_credentials_file = "/home/ubuntu/.aws/credentials"
 }
-
-# variable "aws_region" {
-#   description = "AWS region to deploy resources"
-#   type        = string
-#   default     = "us-east-1"
-# }

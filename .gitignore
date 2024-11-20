@@ -1,4 +1,21 @@
-.terraform/
+# Terraform
+.terraform/*
 *.tfstate
+*.tfstate*
 *.tfstate.backup
 secrets.tfvars
+*.terraform*
+
+# Secrets 
+*.pem
+*.pub
+# Crash log files
+crash.log
+
+# Ansible
+*.retry
+*.ansible/* 
+
+
+# Git
+*.git 

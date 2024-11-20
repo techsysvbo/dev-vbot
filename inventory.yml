@@ -1,0 +1,20 @@
+# all:
+#   hosts:
+#     ubuntu-instance:
+#      # ansible_host: 54.157.183.125
+#       ansible_host: ["18.212.254.133", "54.80.33.84" , "18.206.149.10"]
+#       ansible_user: ubuntu
+#       ansible_ssh_private_key_file: /mnt/c/Users/victo/.ssh/devkey
+# [hosts]
+# localhost
+# [hosts:vars]
+# ansible_connection=local
+# ansible_python_interpreter=/usr/bin/python3
+
+[dev]
+dev1 ansible_host=18.212.254.133 ansible_user=ubuntu ansible_ssh_private_key_file=/mnt/c/Users/victo/.ssh/devkey
+dev2 ansible_host=54.80.33.84 ansible_user=ubuntu ansible_ssh_private_key_file=/mnt/c/Users/victo/.ssh/devkey
+dev3 ansible_host=18.206.149.10 ansible_user=ubuntu ansible_ssh_private_key_file=/mnt/c/Users/victo/.ssh/devkey
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3

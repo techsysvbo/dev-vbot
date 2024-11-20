@@ -1,0 +1,36 @@
+# Add coded and longer code
+#---
+# - name: Test for Grafana and Prometheus Access 
+#   hosts: main 
+#   tasks: 
+#   - name: grafana 
+#     ansible.builtin.uri: 
+#       url: http://{{inventory_hostname}}:3000
+#       follow_redirect: none
+#       status_code: [302]
+#   - name: prometheus 
+#     ansible.builtin.uri: 
+#       url: http://{{inventory_hostname}}:9000 
+#       follow_redirect: none 
+#       status_code: [302]
+
+# Dynamic Way Below:
+---
+- name: Test for Grafana and Prometheus Access 
+  hosts: main 
+  gather_facts: no 
+  vars: 
+    apps: 
+      prometheus:
+        port: 9090
+        status_code: [302]
+      grafana:
+        port: 3000
+        status_code: [302]
+  tasks: 
+  - name: test_app
+    ansible.builtin.uri: 
+      url: "http://{{inventory_hostname}}:{{ item.value.port }}"
+      follow_redirect: none
+      status_code: "{{ item.value.status_code }}"
+    loop: "{{ lookup('dict', apps) }}"

@@ -1,0 +1,105 @@
+# # Provider configuration
+# provider "aws" {
+#   region = var.aws_region
+# }
+
+# VPC and Subnets (simple setup for this example)
+resource "aws_vpc" "dev_vpc" {
+  cidr_block = "10.0.0.0/16"
+  tags = {
+    Name = "dev-vpc"
+  }
+}
+
+resource "aws_subnet" "public_subnet" {
+  vpc_id                  = aws_vpc.dev_vpc.id
+  cidr_block              = "10.0.1.0/24"
+  map_public_ip_on_launch = true
+  tags = {
+    Name = "dev-public-subnet"
+  }
+}
+
+# Internet Gateway for public internet access
+resource "aws_internet_gateway" "dev_igw" {
+  vpc_id = aws_vpc.dev_vpc.id
+  tags = {
+    Name = "dev-igw"
+  }
+}
+
+# Route Table
+resource "aws_route_table" "public_route_table" {
+  vpc_id = aws_vpc.dev_vpc.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.dev_igw.id
+  }
+  tags = {
+    Name = "dev-public-route-table"
+  }
+}
+
+resource "aws_route_table_association" "public_subnet_assoc" {
+  subnet_id      = aws_subnet.public_subnet.id
+  route_table_id = aws_route_table.public_route_table.id
+}
+
+# Security Group for SSH and Application Access
+resource "aws_security_group" "cicd_security_group" {
+  vpc_id = aws_vpc.dev_vpc.id
+
+  # Allow SSH from your IP
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [var.admin_ip]
+  }
+
+  # Application-specific ports (Jenkins, SonarQube, Nexus)
+  ingress {
+    from_port   = 8080
+    to_port     = 8081
+    protocol    = "tcp"
+    cidr_blocks = [var.admin_ip]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "dev-cicd-security-group"
+  }
+}
+
+# Web Server Instance
+resource "aws_instance" "web_server" {
+  ami                    = var.ami_id
+  instance_type          = var.instance_type
+  subnet_id              = aws_subnet.public_subnet.id
+  vpc_security_group_ids = [aws_security_group.cicd_security_group.id]
+  key_name               = var.key_name
+
+  tags = {
+    Name = "dev-web-server"
+  }
+}
+
+# CI/CD Server Instance
+resource "aws_instance" "cicd_server" {
+  ami                    = var.ami_id
+  instance_type          = var.instance_type
+  subnet_id              = aws_subnet.public_subnet.id
+  vpc_security_group_ids = [aws_security_group.cicd_security_group.id]
+  key_name               = var.key_name
+
+  tags = {
+    Name = "dev-cicd-server"
+  }
+}
+

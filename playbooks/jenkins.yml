@@ -1,0 +1,51 @@
+--- 
+- name: Install Openjdk  
+  #hosts: hosts 
+  hosts: all 
+  become: yes
+
+  tasks: 
+  - name: Download apt Key
+    ansible.builtin.get_url: 
+   # ansible.builtin.apt_key: 
+    #  url: https://pkg.jenkins.io/debian-stable/jenkins.io.key # Bad keys on Ubuntu Aws but works locally 
+      url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+      dest: /usr/share/keyrings/jenkins-keyring.gpg
+      mode: '0644'
+     # state: present 
+  - name: Add Jenkins repo to source.list 
+    ansible.builtin.apt_repository:
+      repo: deb https://pkg.jenkins.io/debian-stable binary/
+      #repo: "deb [signed-by=/usr/share/keyrings/jenkins-keyring.gpg] https://pkg.jenkins.io/debian-stable binary/"
+      state: present 
+      filename: jenkins 
+      update_cache: yes 
+  - name: Install openjdk-17-jdk
+    apt: 
+      name: openjdk-17-jdk
+      state: present 
+      update_cache: yes 
+  - name: Update apt cache and Install Jenkins
+    ansible.builtin.apt: 
+    # apt: 
+    #   name: jenkins 
+      update_cache: yes  
+
+  - name: Start Jenkins and enable 
+    ansible.builtin.systemd:
+      name: jenkins
+      state: started 
+      enabled: yes
+
+
+## plugins aws steps and ansible
+## In Github fo ro Github APp and re-enter passwd 
+  # Enter Github url as Homepage URl
+  # Webhook active and Webhook URL jenkins_url/github-webhook 
+  # Select as much events 
+
+  ##Jenkins Plugins for Ansible
+  # ansible & aws pipeline steps 
+
+  # Convert Github keys to PEM file that Jenkins understands
+  # openssl pkcs8 -topk8 -inform PEM -outform PEM -in dev-vbo.2024-11-19.private-key.pem -out converted-github-app.pem -nocrypt
