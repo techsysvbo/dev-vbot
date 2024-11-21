@@ -4,6 +4,6 @@
 #dev3 ansible_host=44.195.37.109 ansible_user=ubuntu ansible_ssh_private_key_file=/mnt/c/Users/victo/.ssh/devkey
 
 [main]
-dev1 ansible_host=98.84.141.179 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/devkey
+dev1 ansible_host=54.90.77.13 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/devkey
 dev2 ansible_host=23.21.26.76 ansible_user=ubuntu ansible_ssh_private_key_file=/home/vbo/.ssh/devkey
 dev3 ansible_host=44.195.37.109 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/devkey
