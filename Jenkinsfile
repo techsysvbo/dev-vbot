@@ -75,7 +75,7 @@ pipeline{
 
     stage('Ansible'){
         steps{
-            ansiblePlaybook(credentialsId: 'ec2-ssh-key', inventory: 'aws_hosts', playbook: 'playbooks/grafana.yml')
+            ansiblePlaybook(credentialsId: 'ec2-ssh', inventory: 'aws_hosts', playbook: 'playbooks/new-grafana.yml')
         }
     }
  
