@@ -20,6 +20,9 @@ crash.log
 # Git
  *.git 
 
+# Randome
+*.test*
+
 # Add to fix token issue/error from stackoverflow https://stackoverflow.com/questions/43378060/meaning-of-the-github-message-push-declined-due-to-email-privacy-restrictions
 # git config --global user.email {ID}+{username}@users.noreply.github.com
 # git commit --amend --reset-author
