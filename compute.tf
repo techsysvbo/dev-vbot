@@ -48,14 +48,14 @@ resource "aws_instance" "dev_main" {
   # }
 } // dont comment out this brace
 
-resource "null_resource" "grafana_install" {
-  depends_on = [aws_instance.dev_main]
-  provisioner "local-exec" {
-    #command = "ansible-playbook -i aws_hosts --key-file  /mnt/c/Users/victo/.ssh/devkey playbooks/grafana.yml"
-    command = "echo 'Hello'" #"ansible-playbook -i aws_hosts --key-file /mnt/c/Users/victo/.ssh/devkey playbook/grafana.yml"
-  }
+# resource "null_resource" "grafana_install" {
+#   depends_on = [aws_instance.dev_main]
+#   provisioner "local-exec" {
+#     #command = "ansible-playbook -i aws_hosts --key-file  /mnt/c/Users/victo/.ssh/devkey playbooks/grafana.yml"
+#     command = "echo 'Hello'" #"ansible-playbook -i aws_hosts --key-file /mnt/c/Users/victo/.ssh/devkey playbook/grafana.yml"
+#   }
 
-}
+# }
 
 # output "grafana_access" {
 #   value = {}
